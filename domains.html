@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Domains – Olive Grove</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      background: #fff; color: #111; font-size: 14px;
+      display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      display: flex; align-items: center; height: 52px;
+      padding: 0 14px; background: #fff; border-bottom: 1px solid #e4e4e7;
+      gap: 10px; flex-shrink: 0; z-index: 10;
+    }
+    .nav-left { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .whop-logo { height: 20px; }
+    .nav-sep { color: #d4d4d8; font-size: 18px; font-weight: 300; margin: 0 2px; }
+    .store-chip { display: flex; align-items: center; gap: 6px; padding: 4px 8px 4px 6px; border-radius: 8px; cursor: pointer; }
+    .store-chip:hover { background: #f4f4f5; }
+    .store-icon { width: 22px; height: 22px; border-radius: 5px; overflow: hidden; flex-shrink: 0; }
+    .store-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .store-chip-name { font-size: 13.5px; font-weight: 600; color: #111; }
+    .chevron-down { width: 14px; height: 14px; color: #a1a1aa; }
+    .nav-search {
+      flex: 1; max-width: 320px; display: flex; align-items: center; gap: 8px;
+      background: #f4f4f5; border: 1px solid #e4e4e7; border-radius: 10px;
+      padding: 0 12px; height: 34px; color: #a1a1aa; font-size: 13px;
+    }
+    .nav-search svg { width: 14px; height: 14px; }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+    .nav-icon-btn {
+      width: 34px; height: 34px; border-radius: 9px; background: #f4f4f5;
+      border: 1px solid #e4e4e7; display: flex; align-items: center;
+      justify-content: center; cursor: pointer; position: relative; color: #52525b;
+    }
+    .nav-icon-btn svg { width: 16px; height: 16px; }
+    .notif-badge {
+      position: absolute; top: -4px; right: -4px; width: 15px; height: 15px;
+      background: #ef4444; border-radius: 50%; font-size: 8.5px; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; border: 1.5px solid #fff;
+    }
+    .nav-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #fde68a, #f9a8d4, #a5b4fc); cursor: pointer; }
+    .balance-btn { display: flex; align-items: center; background: #f4f4f5; border: 1px solid #e4e4e7; border-radius: 9px; padding: 0 12px; height: 34px; font-size: 13px; font-weight: 500; color: #111; cursor: pointer; }
+    .alex-avatar-sm { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; cursor: pointer; }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── LEFT SIDEBAR ── */
+    .sidebar {
+      width: 200px; background: #fff; border-right: 1px solid #e4e4e7;
+      padding: 10px 8px; display: flex; flex-direction: column; gap: 1px;
+      overflow-y: auto; flex-shrink: 0; scrollbar-width: none;
+    }
+    .sidebar::-webkit-scrollbar { display: none; }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 9px; padding: 7px 10px;
+      border-radius: 8px; cursor: pointer; color: #52525b; font-size: 13.5px;
+      font-weight: 400; transition: background 0.12s; text-decoration: none; user-select: none;
+    }
+    .sidebar-item:hover { background: #f4f4f5; color: #111; }
+    .sidebar-item.active { background: #f4f4f5; color: #111; font-weight: 500; }
+    .sidebar-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .sidebar-section { font-size: 11px; font-weight: 600; color: #a1a1aa; padding: 10px 10px 3px; letter-spacing: 0.04em; text-transform: uppercase; }
+
+    /* ── MAIN ── */
+    .main {
+      flex: 1; overflow-y: auto; background: #fff;
+      scrollbar-width: none; display: flex; flex-direction: column;
+    }
+    .main::-webkit-scrollbar { display: none; }
+
+    .back-bar {
+      padding: 14px 28px 0;
+      flex-shrink: 0;
+    }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 13px; color: #71717a; text-decoration: none; cursor: pointer;
+      transition: color 0.12s;
+    }
+    .back-link:hover { color: #111; }
+    .back-link svg { width: 14px; height: 14px; }
+
+    .content {
+      width: 100%; max-width: 700px; margin: 0 auto;
+      padding: 24px 28px 48px;
+    }
+
+    .page-title { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 24px; }
+
+    /* Section */
+    .sec-title { font-size: 13.5px; font-weight: 600; color: #111; margin-bottom: 10px; }
+
+    /* Search box */
+    .domain-search-wrap {
+      display: flex; gap: 0; margin-bottom: 24px;
+      border: 1px solid #e4e4e7; border-radius: 10px; overflow: hidden;
+    }
+    .domain-search-wrap:focus-within { border-color: #a1a1aa; }
+
+    .domain-input {
+      flex: 1; height: 42px; border: none; border-right: 1px solid #e4e4e7;
+      padding: 0 14px; font-size: 14px; color: #111; outline: none;
+      background: #fff;
+    }
+    .domain-input::placeholder { color: #a1a1aa; }
+
+    .search-btn {
+      height: 42px; padding: 0 18px;
+      background: #fff; color: #111;
+      border: none; font-size: 13px; font-weight: 500;
+      cursor: pointer; white-space: nowrap;
+      transition: background 0.12s; display: flex; align-items: center; gap: 6px;
+    }
+    .search-btn:hover { background: #f4f4f5; }
+    .search-btn svg { width: 14px; height: 14px; color: #71717a; }
+
+    /* Results */
+    .results { display: none; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
+    .results.visible { display: flex; }
+
+    .result-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; border-bottom: 1px solid #f4f4f5;
+      transition: background 0.12s;
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-row:hover { background: #fafafa; }
+
+    .result-domain { flex: 1; }
+
+    .result-name-row { display: flex; align-items: center; gap: 7px; margin-bottom: 3px; }
+    .result-name { font-size: 14px; font-weight: 600; color: #111; }
+    .result-tld { color: #52525b; font-weight: 400; }
+
+    .badge-free {
+      font-size: 10.5px; font-weight: 500;
+      background: #f4f4f5; color: #52525b;
+      padding: 2px 7px; border-radius: 5px; border: 1px solid #e4e4e7;
+    }
+
+    .result-pricing { font-size: 12px; color: #71717a; }
+
+    .register-btn {
+      display: flex; align-items: center; gap: 5px;
+      height: 32px; padding: 0 14px;
+      background: #fff; color: #111;
+      border: 1px solid #e4e4e7; border-radius: 8px;
+      font-size: 12.5px; font-weight: 500;
+      cursor: pointer; white-space: nowrap;
+      transition: background 0.12s, border-color 0.12s; flex-shrink: 0;
+    }
+    .register-btn:hover { background: #f4f4f5; border-color: #d4d4d8; }
+    .register-btn svg { width: 13px; height: 13px; color: #71717a; }
+
+    /* Success state */
+    .success-card {
+      display: none; border: 1px solid #e4e4e7; border-radius: 14px; overflow: hidden;
+    }
+    .success-card.visible { display: block; }
+
+    .success-header {
+      position: relative; padding: 22px 20px; overflow: hidden;
+      display: flex; align-items: center; gap: 14px;
+      border-bottom: 1px solid #e4e4e7; background: #fff;
+    }
+
+    /* CSS gradient blob like financing section */
+    .success-header::before {
+      content: '';
+      position: absolute; top: -40px; left: -40px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(134,239,172,0.35) 0%, rgba(147,197,253,0.25) 40%, transparent 70%);
+      filter: blur(20px); pointer-events: none;
+    }
+    .success-header::after {
+      content: '';
+      position: absolute; bottom: -30px; right: 60px;
+      width: 160px; height: 160px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(216,180,254,0.3) 0%, rgba(251,207,232,0.2) 50%, transparent 70%);
+      filter: blur(18px); pointer-events: none;
+    }
+
+    .success-icon {
+      width: 44px; height: 44px; background: #22c55e; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; position: relative; z-index: 1;
+      box-shadow: 0 2px 8px rgba(34,197,94,0.3);
+    }
+    .success-icon svg { width: 22px; height: 22px; color: #fff; }
+
+    .success-header-text { position: relative; z-index: 1; }
+    .success-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 2px; }
+    .success-sub { font-size: 13px; color: #71717a; }
+
+    .success-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+
+    .info-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 14px; background: #fafafa; border: 1px solid #f0f0f0;
+      border-radius: 10px;
+    }
+
+    .info-label { font-size: 12px; color: #71717a; margin-bottom: 3px; }
+    .info-value { font-size: 13.5px; font-weight: 600; color: #111; }
+
+    .status-chip {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 500; color: #52525b;
+      background: #f4f4f5; border: 1px solid #e4e4e7;
+      padding: 4px 10px; border-radius: 20px; flex-shrink: 0;
+    }
+    .status-chip .dot-g { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
+
+    .namify-note {
+      font-size: 12.5px; color: #71717a; line-height: 1.6;
+      padding: 12px 14px; background: #fafafa; border: 1px solid #f0f0f0;
+      border-radius: 10px;
+    }
+    .namify-note strong { color: #111; font-weight: 500; }
+
+    .activate-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; padding: 12px;
+      background: #fa4616; color: #fff;
+      border: 1px solid #b62600; border-radius: 12px;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      box-shadow: 0px 3px 0px 0px #b62600;
+      transition: background 0.1s, box-shadow 0.1s, transform 0.1s;
+    }
+    .activate-btn:hover { background: #fe5a2e; }
+    .activate-btn:active { background: #fe5a2e; box-shadow: none; transform: translateY(3px); }
+    .activate-btn svg { width: 16px; height: 16px; }
+
+    /* ── Domains table ── */
+    .domains-table-wrap {
+      border: 1px solid #e4e4e7; border-radius: 12px;
+      overflow: hidden; margin-bottom: 28px;
+    }
+    .domains-table-wrap.hidden { display: none; }
+
+    /* Domain table */
+    .domain-table { width: 100%; border-collapse: collapse; }
+
+    .domain-table thead tr { border-bottom: 1px solid #e4e4e7; }
+
+    .domain-table th {
+      padding: 9px 16px; background: #fafafa;
+      font-size: 11px; font-weight: 600; color: #a1a1aa;
+      text-transform: uppercase; letter-spacing: 0.05em; text-align: left;
+    }
+
+    .domain-table td {
+      padding: 13px 16px; border-bottom: 1px solid #f4f4f5;
+      vertical-align: middle;
+    }
+    .domain-table tbody tr:last-child td { border-bottom: none; }
+    .domain-table tbody tr:hover td { background: #fafafa; }
+
+    .domain-name { font-size: 13.5px; font-weight: 600; color: #111; }
+    .domain-expiry { font-size: 11.5px; color: #a1a1aa; margin-top: 2px; }
+
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 500; color: #52525b;
+      background: #f4f4f5; border: 1px solid #e4e4e7;
+      padding: 4px 10px; border-radius: 20px; white-space: nowrap;
+    }
+    .status-pill .dot-g    { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
+    .status-pill .dot-gray { width: 6px; height: 6px; border-radius: 50%; background: #d4d4d8; flex-shrink: 0; }
+
+    .domain-actions { display: flex; align-items: center; gap: 6px; }
+
+    .connect-btn {
+      height: 28px; padding: 0 12px;
+      background: #eff6ff; color: #2563eb;
+      border: 1px solid #bfdbfe; border-radius: 7px;
+      font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;
+      transition: background 0.12s;
+    }
+    .connect-btn:hover { background: #dbeafe; }
+
+    .disconnect-btn {
+      height: 28px; padding: 0 12px;
+      background: #fff; color: #71717a;
+      border: 1px solid #e4e4e7; border-radius: 7px;
+      font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;
+      transition: all 0.12s;
+    }
+    .disconnect-btn:hover { background: #fef2f2; color: #dc2626; border-color: #fecaca; }
+
+    .action-btn {
+      height: 28px; padding: 0 12px;
+      background: #fff; color: #3f3f46;
+      border: 1px solid #e4e4e7; border-radius: 7px;
+      font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap;
+      transition: background 0.12s; display: flex; align-items: center; gap: 4px;
+    }
+    .action-btn:hover { background: #f4f4f5; }
+    .action-btn svg { width: 11px; height: 11px; color: #a1a1aa; }
+
+    /* ── INLINE REGISTRATION FORM ── */
+    .reg-inline-card {
+      display: none; border: 1px solid #e4e4e7; border-radius: 12px;
+      overflow: hidden; margin-bottom: 24px;
+    }
+    .reg-inline-card.visible { display: block; }
+    .reg-inline-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px 14px; border-bottom: 1px solid #f4f4f5; background: #fafafa;
+    }
+    .reg-inline-domain-wrap { display: flex; flex-direction: column; gap: 2px; }
+    .reg-inline-eyebrow { font-size: 10.5px; font-weight: 600; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.05em; }
+    .reg-inline-domain { font-size: 15px; font-weight: 700; color: #111; }
+    .reg-inline-price {
+      font-size: 12px; font-weight: 500; color: #52525b;
+      background: #f4f4f5; border: 1px solid #e4e4e7;
+      padding: 3px 10px; border-radius: 20px; white-space: nowrap;
+    }
+    .reg-inline-body { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+    .reg-inline-fields { display: flex; gap: 12px; }
+    .reg-inline-fields .modal-field { flex: 1; }
+
+    /* ── MODAL BACKDROP ── */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0.45); backdrop-filter: blur(3px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-backdrop.visible { display: flex; }
+
+    /* ── REGISTRATION MODAL ── */
+    .reg-modal-box {
+      background: #fff; border-radius: 16px; width: 100%; max-width: 400px;
+      padding: 28px 24px; position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    }
+    .modal-close-btn {
+      position: absolute; top: 16px; right: 16px;
+      width: 28px; height: 28px; border-radius: 7px;
+      background: #f4f4f5; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; color: #71717a;
+    }
+    .modal-close-btn:hover { background: #e4e4e7; }
+    .modal-close-btn svg { width: 13px; height: 13px; }
+
+    .modal-domain-label { font-size: 11px; font-weight: 600; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+    .modal-domain-name { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 4px; }
+    .modal-price-tag {
+      display: inline-flex; align-items: center;
+      font-size: 12.5px; font-weight: 500; color: #52525b;
+      background: #f4f4f5; border: 1px solid #e4e4e7;
+      padding: 3px 10px; border-radius: 20px; margin-bottom: 22px;
+    }
+    .modal-fields { display: flex; flex-direction: column; gap: 12px; margin-bottom: 14px; }
+    .modal-field { display: flex; flex-direction: column; gap: 5px; }
+    .modal-label { font-size: 12px; font-weight: 500; color: #52525b; }
+    .modal-input {
+      height: 38px; border: 1px solid #e4e4e7; border-radius: 9px;
+      padding: 0 12px; font-size: 13.5px; color: #111; outline: none;
+    }
+    .modal-input:focus { border-color: #a1a1aa; }
+    .modal-input::placeholder { color: #a1a1aa; }
+
+    .agree-wrap {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 12.5px; color: #52525b; margin-bottom: 18px; cursor: pointer; line-height: 1.5;
+    }
+    .agree-wrap input[type="checkbox"] { margin-top: 2px; flex-shrink: 0; accent-color: #fa4616; }
+    .agree-link { color: #111; font-weight: 500; text-underline-offset: 2px; }
+
+    .reg-submit-btn {
+      width: 100%; padding: 12px;
+      background: #fa4616; color: #fff;
+      border: 1px solid #b62600; border-radius: 12px;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      box-shadow: 0px 3px 0px 0px #b62600;
+      transition: background 0.1s, box-shadow 0.1s, transform 0.1s;
+    }
+    .reg-submit-btn:hover { background: #fe5a2e; }
+    .reg-submit-btn:active { box-shadow: none; transform: translateY(3px); }
+
+    /* ── PAYWALL MODAL ── */
+    .paywall-wrap {
+      width: 100%; max-width: 480px;
+      display: flex; flex-direction: column; gap: 12px;
+      max-height: 90vh; overflow-y: auto; scrollbar-width: none;
+    }
+    .paywall-wrap::-webkit-scrollbar { display: none; }
+
+    .paywall-close-row {
+      display: flex; justify-content: flex-end; margin-bottom: -4px;
+    }
+    .paywall-close-btn {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
+      cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff;
+    }
+    .paywall-close-btn:hover { background: rgba(255,255,255,0.25); }
+    .paywall-close-btn svg { width: 14px; height: 14px; }
+
+    .invoice-card {
+      background: #fff; border-radius: 16px; padding: 24px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+    }
+
+    .invoice-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; }
+    .invoice-from { font-size: 13px; color: #71717a; margin-bottom: 6px; }
+    .invoice-amount { font-size: 34px; font-weight: 700; color: #111; margin-bottom: 4px; letter-spacing: -0.5px; }
+    .invoice-due { font-size: 13px; color: #71717a; }
+    .invoice-doc-icon {
+      width: 52px; height: 62px; flex-shrink: 0;
+    }
+
+    .invoice-divider { height: 1px; background: #f0f0f0; margin: 0 0 16px; }
+
+    .download-invoice-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      height: 34px; padding: 0 14px;
+      background: #fff; color: #52525b;
+      border: 1px solid #e4e4e7; border-radius: 8px;
+      font-size: 13px; font-weight: 500; cursor: pointer; margin-bottom: 20px;
+    }
+    .download-invoice-btn:hover { background: #f4f4f5; }
+    .download-invoice-btn svg { width: 14px; height: 14px; }
+
+    .invoice-meta { margin-bottom: 14px; }
+    .invoice-meta-label { font-size: 12px; color: #71717a; margin-bottom: 3px; }
+    .invoice-meta-value { font-size: 13.5px; font-weight: 500; color: #111; }
+
+    .pay-now-btn {
+      width: 100%; padding: 13px;
+      background: #2563eb; color: #fff;
+      border: none; border-radius: 12px;
+      font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 4px;
+      transition: background 0.12s;
+    }
+    .pay-now-btn:hover { background: #1d4ed8; }
+
+    .invoice-date { font-size: 13px; color: #71717a; margin-bottom: 16px; }
+    .invoice-line { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; }
+    .invoice-line-label { font-size: 14px; color: #111; }
+    .invoice-line-val { font-size: 14px; font-weight: 500; color: #111; }
+    .invoice-line-total .invoice-line-label,
+    .invoice-line-total .invoice-line-val { font-weight: 700; }
+    .invoice-line-sep { height: 1px; background: #f0f0f0; }
+
+    .invoice-support { font-size: 13px; color: #71717a; margin-top: 18px; line-height: 1.5; }
+    .invoice-link { color: #2563eb; text-underline-offset: 2px; }
+
+    .invoice-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px; background: rgba(255,255,255,0.08);
+      border-radius: 12px; border: 1px solid rgba(255,255,255,0.15);
+    }
+    .powered-by { display: flex; align-items: center; gap: 6px; font-size: 13px; color: rgba(255,255,255,0.8); }
+    .powered-logo { height: 16px; filter: brightness(0) invert(1); }
+    .powered-name { font-weight: 600; color: #fff; }
+    .footer-socials { display: flex; align-items: center; gap: 6px; }
+    .social-icon-btn {
+      width: 30px; height: 30px; border-radius: 7px;
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.8);
+      cursor: pointer;
+    }
+    .social-icon-btn svg { width: 14px; height: 14px; }
+  </style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="nav-left">
+    <img src="whoplogo.png" alt="Whop" class="whop-logo" />
+    <span class="nav-sep">/</span>
+    <div class="store-chip">
+      <div class="store-icon"><img src="oglogo.jpg" alt="OG" /></div>
+      <span class="store-chip-name">Olive Grove</span>
+      <svg class="chevron-down" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+    </div>
+  </div>
+  <div class="nav-search">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M11 11l3 3"/></svg>
+    Search Olive Grove
+  </div>
+  <div class="nav-right">
+    <div class="nav-icon-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4h12M2 8h8M2 12h6"/></svg>
+      <div class="notif-badge">1</div>
+    </div>
+    <div class="nav-icon-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2a4 4 0 0 1 4 4v2.5l1 1.5H3l1-1.5V6a4 4 0 0 1 4-4zM6.5 13a1.5 1.5 0 0 0 3 0"/></svg>
+    </div>
+    <div class="nav-avatar"></div>
+    <div class="balance-btn">$0.00</div>
+    <img src="alex profile pic.png" alt="Alex" class="alex-avatar-sm" />
+  </div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- Left Sidebar -->
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 7.5L8 2l6 5.5V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5z"/></svg>
+      Business home
+    </a>
+    <div class="sidebar-section">Dashboard</div>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="2,12 5,8 8,10 11,5 14,8"/></svg>
+      Analytics
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="4.5" width="13" height="9" rx="1.5"/><path d="M4.5 4.5V3A1.5 1.5 0 0 1 6 1.5h4A1.5 1.5 0 0 1 11.5 3v1.5"/><line x1="4.5" y1="9" x2="11.5" y2="9"/></svg>
+      Payments
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="5.5" r="3"/><path d="M2 14c0-3.314 2.686-5.5 6-5.5s6 2.186 6 5.5"/></svg>
+      Users
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="12" height="8" rx="1.5"/><path d="M5 6V4.5a3 3 0 0 1 6 0V6"/></svg>
+      Balances
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="4" width="13" height="9" rx="1.5"/><line x1="1.5" y1="7.5" x2="14.5" y2="7.5"/></svg>
+      Cards
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h12v7.5H2z"/><line x1="5" y1="13.5" x2="11" y2="13.5"/><line x1="8" y1="10.5" x2="8" y2="13.5"/></svg>
+      Ads
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 2.5h11a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H9l-3 2v-2H2.5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z"/></svg>
+      Support chats
+    </a>
+    <div class="sidebar-section">Pinned</div>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="5,8 2,8 8,2 14,8 11,8 11,14 5,14 5,8"/></svg>
+      Developer
+    </a>
+    <a href="settings.html" class="sidebar-item active">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.54 11.54l1.42 1.42M3.05 12.95l1.42-1.42M11.54 4.46l1.42-1.42"/></svg>
+      Settings
+    </a>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="back-bar">
+      <a href="settings.html" class="back-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 4l-4 4 4 4"/></svg>
+        Settings
+      </a>
+    </div>
+
+    <div class="content">
+      <div class="page-title">Domains</div>
+
+      <!-- Registered domains table -->
+      <div class="sec-title">My domains</div>
+      <div class="domains-table-wrap" id="domainsTableWrap">
+        <table class="domain-table">
+          <thead>
+            <tr>
+              <th>Domain</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="domainsTableBody">
+            <tr id="emptyRow">
+              <td colspan="3" style="text-align:center;color:#a1a1aa;font-size:13px;padding:22px 16px;">No domains added yet</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Search -->
+      <div class="sec-title">Find your domain</div>
+      <div class="domain-search-wrap">
+        <input class="domain-input" id="domainInput" type="text" placeholder="e.g. olivegrove" />
+        <button class="search-btn" onclick="searchDomains()">
+          Search
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l4 4-4 4"/></svg>
+        </button>
+      </div>
+
+      <!-- Results -->
+      <div class="results" id="results"></div>
+
+      <!-- Inline registration form -->
+      <div class="reg-inline-card" id="regInlineCard">
+        <div class="reg-inline-header">
+          <div class="reg-inline-domain-wrap">
+            <div class="reg-inline-eyebrow">Registering</div>
+            <div class="reg-inline-domain" id="regDomainName"></div>
+          </div>
+          <div class="reg-inline-price" id="regPricing"></div>
+        </div>
+        <div class="reg-inline-body">
+          <div class="reg-inline-fields">
+            <div class="modal-field">
+              <label class="modal-label" for="regName">Full name</label>
+              <input class="modal-input" id="regName" type="text" placeholder="Alex Johnson" autocomplete="name" />
+            </div>
+            <div class="modal-field">
+              <label class="modal-label" for="regEmail">Email</label>
+              <input class="modal-input" id="regEmail" type="email" placeholder="alex@olivegrove.com" autocomplete="email" />
+            </div>
+          </div>
+          <label class="agree-wrap">
+            <input type="checkbox" id="regAgree" />
+            <span>I agree to create a domain account with Namify and accept their <a href="https://namify.tech/legal" target="_blank" class="agree-link">legal terms</a>.</span>
+          </label>
+          <div id="regError" style="display:none;font-size:12px;color:#dc2626;padding:8px 12px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;"></div>
+          <button class="reg-submit-btn" id="regSubmitBtn" onclick="submitRegistration()">Register domain</button>
+        </div>
+      </div>
+
+      <!-- Success state -->
+      <div class="success-card" id="successCard">
+        <div class="success-header">
+          <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div class="success-header-text">
+            <div class="success-title">Domain registered!</div>
+            <div class="success-sub" id="successDomain"></div>
+          </div>
+        </div>
+        <div class="success-body">
+          <div class="info-row">
+            <div>
+              <div class="info-label">Your domain</div>
+              <div class="info-value" id="registeredDomain"></div>
+            </div>
+          </div>
+          <div class="namify-note">
+            Complete your domain registration process by activating your domain in the <strong>Namify panel</strong>.
+          </div>
+          <a href="https://whoppanel.figma.site/" target="_blank" style="text-decoration:none;">
+            <button class="activate-btn">
+              Activate your domain
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l4 4-4 4"/></svg>
+            </button>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  const tlds = [
+    { ext: '.store',  free: true,  price: 49,  pricing: 'Free for first year · Renews at $49/yr' },
+    { ext: '.com',    free: false, price: 25,  pricing: '$25/yr' },
+    { ext: '.online', free: true,  price: 45,  pricing: 'Free for first year · Renews at $45/yr' },
+    { ext: '.tech',   free: false, price: 35,  pricing: '$35/yr' },
+    { ext: '.org',    free: false, price: 20,  pricing: '$20/yr' },
+    { ext: '.space',  free: false, price: 15,  pricing: '$15/yr' },
+  ];
+
+  // State
+  let pendingDomain    = null;
+  let pendingIsFree    = false;
+  let pendingPrice     = 0;
+  let paywallDomain    = null;
+  let paywallPrice     = 0;
+  let paywallIsRenewal = false;
+
+  function searchDomains() {
+    const val = document.getElementById('domainInput').value.trim().toLowerCase().replace(/\s+/g, '');
+    if (!val) return;
+
+    const results = document.getElementById('results');
+    results.innerHTML = '';
+    results.classList.add('visible');
+    document.getElementById('successCard').classList.remove('visible');
+    document.getElementById('regInlineCard').classList.remove('visible');
+
+    tlds.forEach(tld => {
+      const row = document.createElement('div');
+      row.className = 'result-row';
+      row.innerHTML = `
+        <div class="result-domain">
+          <div class="result-name-row">
+            <span class="result-name">${val}<span class="result-tld">${tld.ext}</span></span>
+            ${tld.free ? `<span class="badge-free">Free</span>` : ''}
+          </div>
+          <div class="result-pricing">${tld.pricing}</div>
+        </div>
+        <button class="register-btn" onclick="selectDomain('${val}${tld.ext}', ${tld.free}, ${tld.price})">
+          Select
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l4 4-4 4"/></svg>
+        </button>
+      `;
+      results.appendChild(row);
+    });
+  }
+
+  /* ── STEP 1: Select → show inline form with Alex prefilled ── */
+  function selectDomain(domain, isFree, price) {
+    pendingDomain = domain;
+    pendingIsFree = isFree;
+    pendingPrice  = price;
+
+    document.getElementById('regDomainName').textContent = domain;
+    document.getElementById('regPricing').textContent    = isFree ? 'Free for first year' : '$' + price + '/yr';
+    document.getElementById('regSubmitBtn').textContent  = isFree ? 'Register domain' : 'Pay & Register — $' + price + '.00';
+
+    // Prefill Alex's details
+    document.getElementById('regName').value  = 'Alex Jackson';
+    document.getElementById('regEmail').value = 'alex@olivegrove.com';
+    document.getElementById('regAgree').checked = false;
+    document.getElementById('regError').style.display = 'none';
+
+    // Hide search results when inline form opens
+    document.getElementById('results').classList.remove('visible');
+
+    const card = document.getElementById('regInlineCard');
+    card.classList.add('visible');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  /* ── STEP 2: Register/Pay button ── */
+  function submitRegistration() {
+    const name   = document.getElementById('regName').value.trim();
+    const email  = document.getElementById('regEmail').value.trim();
+    const agreed = document.getElementById('regAgree').checked;
+
+    if (!name)                         { showFieldError('Please enter your name.');        return; }
+    if (!email || !email.includes('@')) { showFieldError('Please enter a valid email.');   return; }
+    if (!agreed)                        { showFieldError('Please accept the legal terms.'); return; }
+
+    document.getElementById('regInlineCard').classList.remove('visible');
+
+    if (pendingIsFree) {
+      registerDomain(pendingDomain, pendingPrice);
+    } else {
+      showPaywall(pendingDomain, pendingPrice, false);
+    }
+  }
+
+  function showFieldError(msg) {
+    const el = document.getElementById('regError');
+    el.textContent = msg;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 3000);
+  }
+
+  /* ── STEP 3a: Free domain → success card + table row ── */
+  function registerDomain(domain, price) {
+    document.getElementById('results').classList.remove('visible');
+    const card = document.getElementById('successCard');
+    document.getElementById('successDomain').textContent  = domain + ' is now yours';
+    document.getElementById('registeredDomain').textContent = domain;
+    card.classList.add('visible');
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    const emptyRow = document.getElementById('emptyRow');
+    if (emptyRow) emptyRow.remove();
+
+    const expiry = new Date();
+    expiry.setFullYear(expiry.getFullYear() + 1);
+    const expiryTs  = expiry.getTime();
+    const expiryStr = expiry.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    const renewPrice = price || 49;
+    const tbody = document.getElementById('domainsTableBody');
+    const row   = document.createElement('tr');
+    row.dataset.domain  = domain;
+    row.dataset.expiry  = expiryTs;
+    row.innerHTML = `
+      <td>
+        <div class="domain-name">${domain}</div>
+        <div class="domain-expiry">Expiry ${expiryStr}</div>
+      </td>
+      <td class="status-cell">
+        <span class="status-pill"><span class="dot-gray"></span>Not connected</span>
+      </td>
+      <td>
+        <div class="domain-actions">
+          <button class="connect-btn" onclick="connectDomain(this)">Connect</button>
+          <button class="action-btn" onclick="showPaywall('${domain}', ${renewPrice}, true)">Renew</button>
+          <a href="https://whoppanel.figma.site/" target="_blank" style="text-decoration:none;">
+            <button class="action-btn">
+              Manage
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l4 4-4 4"/></svg>
+            </button>
+          </a>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(row);
+    document.getElementById('domainInput').value = '';
+  }
+
+  /* ── STEP 3b / Renew: Show paywall invoice ── */
+  function showPaywall(domain, amount, isRenewal) {
+    paywallDomain    = domain;
+    paywallPrice     = amount;
+    paywallIsRenewal = isRenewal;
+
+    const due = new Date();
+    due.setDate(due.getDate() + 7);
+    const dueStr   = due.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const todayStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const inv      = '#' + String(Math.floor(Math.random() * 999999999)).padStart(9, '0');
+    const desc     = isRenewal ? `Domain renewal for ${domain}` : `Domain registration for ${domain}`;
+
+    document.getElementById('pwAmount').textContent      = '$' + amount.toFixed(2);
+    document.getElementById('pwDue').textContent         = 'Due ' + dueStr;
+    document.getElementById('pwInvoiceNum').textContent  = inv;
+    document.getElementById('pwDescription').textContent = desc;
+    document.getElementById('pwDate').textContent        = todayStr;
+    document.getElementById('pwService').textContent     = '$' + amount.toFixed(2);
+    document.getElementById('pwTotal').textContent       = '$' + amount.toFixed(2);
+
+    document.getElementById('paywallModal').classList.add('visible');
+  }
+
+  /* ── Pay now: close modal, register domain or extend expiry ── */
+  function payNow() {
+    document.getElementById('paywallModal').classList.remove('visible');
+    if (!paywallDomain) return;
+
+    if (!paywallIsRenewal) {
+      // Paid registration → show success card + add to table
+      registerDomain(paywallDomain, paywallPrice);
+    } else {
+      // Renewal → extend expiry by 1 year
+      document.querySelectorAll('#domainsTableBody tr').forEach(row => {
+        if (row.dataset.domain === paywallDomain) {
+          const currentTs = parseInt(row.dataset.expiry) || Date.now();
+          const newExpiry = new Date(currentTs);
+          newExpiry.setFullYear(newExpiry.getFullYear() + 1);
+          row.dataset.expiry = newExpiry.getTime();
+          const newStr = newExpiry.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+          const el = row.querySelector('.domain-expiry');
+          if (el) el.textContent = 'Expiry ' + newStr;
+        }
+      });
+    }
+    paywallDomain = null;
+  }
+
+  function closePaywall(e) {
+    if (e.target === document.getElementById('paywallModal')) {
+      document.getElementById('paywallModal').classList.remove('visible');
+    }
+  }
+
+  function connectDomain(btn) {
+    document.querySelectorAll('#domainsTableBody tr').forEach(r => {
+      const sc = r.querySelector('.status-cell');
+      const cb = r.querySelector('.connect-btn, .disconnect-btn');
+      if (sc) sc.innerHTML = `<span class="status-pill"><span class="dot-gray"></span>Not connected</span>`;
+      if (cb) { cb.textContent = 'Connect'; cb.className = 'connect-btn'; cb.onclick = () => connectDomain(cb); }
+    });
+    const row = btn.closest('tr');
+    row.querySelector('.status-cell').innerHTML = `<span class="status-pill"><span class="dot-g"></span>Connected</span>`;
+    btn.textContent = 'Disconnect';
+    btn.className = 'disconnect-btn';
+    btn.onclick = () => disconnectDomain(btn);
+  }
+
+  function disconnectDomain(btn) {
+    const row = btn.closest('tr');
+    row.querySelector('.status-cell').innerHTML = `<span class="status-pill"><span class="dot-gray"></span>Not connected</span>`;
+    btn.textContent = 'Connect';
+    btn.className = 'connect-btn';
+    btn.onclick = () => connectDomain(btn);
+  }
+
+  document.getElementById('domainInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') searchDomains();
+  });
+</script>
+<!-- ── PAYWALL MODAL ── -->
+<div class="modal-backdrop" id="paywallModal" onclick="closePaywall(event)">
+  <div class="paywall-wrap">
+    <div class="paywall-close-row">
+      <button class="paywall-close-btn" onclick="document.getElementById('paywallModal').classList.remove('visible')">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 3l10 10M13 3L3 13"/></svg>
+      </button>
+    </div>
+
+    <!-- Top invoice card -->
+    <div class="invoice-card">
+      <div class="invoice-top">
+        <div>
+          <div class="invoice-from">Invoice from Whop</div>
+          <div class="invoice-amount" id="pwAmount">$0.00</div>
+          <div class="invoice-due" id="pwDue">Due —</div>
+        </div>
+        <div class="invoice-doc-icon">
+          <svg viewBox="0 0 40 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:44px;height:54px">
+            <rect width="40" height="52" rx="7" fill="#f4f4f5"/>
+            <rect x="8" y="12" width="24" height="3.5" rx="1.75" fill="#d4d4d8"/>
+            <rect x="8" y="21" width="18" height="3.5" rx="1.75" fill="#d4d4d8"/>
+            <rect x="8" y="30" width="22" height="3.5" rx="1.75" fill="#e4e4e7"/>
+            <rect x="8" y="39" width="14" height="3.5" rx="1.75" fill="#e4e4e7"/>
+          </svg>
+        </div>
+      </div>
+      <div class="invoice-divider"></div>
+      <button class="download-invoice-btn">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 2v8M4 7l4 4 4-4"/><line x1="2" y1="14" x2="14" y2="14"/></svg>
+        Download invoice
+      </button>
+      <div class="invoice-meta">
+        <div class="invoice-meta-label">Invoice number</div>
+        <div class="invoice-meta-value" id="pwInvoiceNum">#000000000</div>
+      </div>
+      <div class="invoice-meta" style="margin-bottom:20px;">
+        <div class="invoice-meta-label">Description</div>
+        <div class="invoice-meta-value" id="pwDescription"></div>
+      </div>
+      <button class="pay-now-btn" onclick="payNow()">Pay now</button>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

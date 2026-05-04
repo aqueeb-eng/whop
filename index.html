@@ -3,381 +3,1051 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>The Deep Ocean</title>
+  <title>Olive Grove – Whop</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --navy: #020d1a;
-      --deep: #041628;
-      --mid: #062a4e;
-      --light: #0a4a7a;
-      --glow: #00b4d8;
-      --pale: #90e0ef;
-      --white: #e8f4fd;
-    }
-
-    html { scroll-behavior: smooth; }
-
     body {
-      font-family: 'Georgia', serif;
-      background: var(--navy);
-      color: var(--white);
-      overflow-x: hidden;
-    }
-
-    /* ── Hero ── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #111;
+      font-size: 14px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-      background: radial-gradient(ellipse at 50% 60%, var(--mid) 0%, var(--navy) 70%);
+      height: 100vh;
       overflow: hidden;
     }
 
-    .bubbles {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
-    .bubble {
-      position: absolute;
-      bottom: -60px;
-      border-radius: 50%;
-      background: rgba(0, 180, 216, 0.15);
-      border: 1px solid rgba(0, 180, 216, 0.3);
-      animation: rise linear infinite;
-    }
-
-    @keyframes rise {
-      to { transform: translateY(-110vh); opacity: 0; }
-    }
-
-    .depth-label {
-      font-size: 0.75rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--pale);
-      margin-bottom: 1rem;
-      opacity: 0.7;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.8rem, 8vw, 6rem);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      line-height: 1.05;
-      background: linear-gradient(135deg, var(--white) 0%, var(--glow) 60%, var(--pale) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero p {
-      margin-top: 1.5rem;
-      max-width: 520px;
-      font-size: 1.1rem;
-      line-height: 1.7;
-      color: rgba(232, 244, 253, 0.75);
-    }
-
-    .scroll-hint {
-      margin-top: 3rem;
+    /* ── TOP NAV ── */
+    .topnav {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 0.4rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--pale);
-      opacity: 0.5;
+      height: 52px;
+      padding: 0 14px;
+      background: #fff;
+      border-bottom: 1px solid #e4e4e7;
+      gap: 10px;
+      flex-shrink: 0;
+      z-index: 10;
     }
 
-    .scroll-hint span {
-      display: block;
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--pale), transparent);
-      animation: pulse 2s ease-in-out infinite;
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
     }
 
-    @keyframes pulse { 0%,100%{opacity:.5} 50%{opacity:1} }
-
-    /* ── Zones ── */
-    .zones {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1px;
-      background: var(--light);
+    .whop-logo {
+      height: 20px;
+      width: auto;
     }
 
-    .zone {
-      padding: 3rem 2.5rem;
+    .nav-sep {
+      color: #d4d4d8;
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1;
+      margin: 0 2px;
+    }
+
+    .store-chip {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px 4px 6px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .store-chip:hover { background: #f4f4f5; }
+
+    .store-icon {
+      width: 22px;
+      height: 22px;
+      background: #e4e4e7;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: #52525b;
+    }
+
+    .store-chip-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .chevron-down {
+      width: 14px;
+      height: 14px;
+      color: #a1a1aa;
+    }
+
+    /* Search */
+    .nav-search {
+      flex: 1;
+      max-width: 320px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f4f4f5;
+      border: 1px solid #e4e4e7;
+      border-radius: 10px;
+      padding: 0 12px;
+      height: 34px;
+      color: #a1a1aa;
+      font-size: 13px;
+    }
+    .nav-search svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* Right */
+    .nav-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: #f4f4f5;
+      border: 1px solid #e4e4e7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      color: #52525b;
+      transition: background 0.15s;
+    }
+    .nav-icon-btn:hover { background: #e4e4e7; }
+    .nav-icon-btn svg { width: 16px; height: 16px; }
+
+    .notif-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 15px;
+      height: 15px;
+      background: #ef4444;
+      border-radius: 50%;
+      font-size: 8.5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      border: 1.5px solid #fff;
+    }
+
+    .nav-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fde68a, #f9a8d4, #a5b4fc);
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .balance-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f4f4f5;
+      border: 1px solid #e4e4e7;
+      border-radius: 9px;
+      padding: 0 12px;
+      height: 34px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #111;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .balance-btn:hover { background: #e4e4e7; }
+
+    .alex-avatar-sm {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    /* ── LAYOUT ── */
+    .layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── LEFT SIDEBAR ── */
+    .sidebar {
+      width: 200px;
+      background: #fff;
+      border-right: 1px solid #e4e4e7;
+      padding: 10px 8px;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      transition: background 0.3s;
+      gap: 1px;
+      overflow-y: auto;
+      flex-shrink: 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
+    .sidebar::-webkit-scrollbar { display: none; }
 
-    .zone:nth-child(1) { background: #031420; }
-    .zone:nth-child(2) { background: #020f1c; }
-    .zone:nth-child(3) { background: #020c17; }
-    .zone:nth-child(4) { background: #010810; }
-
-    .zone:hover { background: var(--deep); }
-
-    .zone-depth {
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--glow);
-    }
-
-    .zone h2 {
-      font-size: 1.6rem;
-      font-weight: 400;
-      color: var(--white);
-    }
-
-    .zone p {
-      font-size: 0.95rem;
-      line-height: 1.75;
-      color: rgba(232, 244, 253, 0.6);
-    }
-
-    .zone-icon {
-      font-size: 2.5rem;
-      line-height: 1;
-    }
-
-    /* ── Creature spotlight ── */
-    .spotlight {
-      padding: 6rem 2rem;
-      background: var(--deep);
-      text-align: center;
-    }
-
-    .spotlight h2 {
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      font-weight: 400;
-      margin-bottom: 0.75rem;
-      color: var(--pale);
-    }
-
-    .spotlight .sub {
-      color: rgba(232, 244, 253, 0.5);
-      margin-bottom: 3.5rem;
-      font-size: 0.95rem;
-    }
-
-    .creatures {
+    .sidebar-item {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      max-width: 960px;
-      margin: 0 auto;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #52525b;
+      font-size: 13.5px;
+      font-weight: 400;
+      transition: background 0.12s;
+      text-decoration: none;
+      user-select: none;
+    }
+    .sidebar-item:hover { background: #f4f4f5; color: #111; }
+    .sidebar-item.active {
+      background: #f4f4f5;
+      color: #111;
+      font-weight: 500;
+    }
+    .sidebar-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    .sidebar-section {
+      font-size: 11px;
+      font-weight: 600;
+      color: #a1a1aa;
+      padding: 10px 10px 3px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
 
-    .creature {
-      background: rgba(0, 180, 216, 0.06);
-      border: 1px solid rgba(0, 180, 216, 0.15);
+    /* ── CENTER ZONE (card + right panel side by side) ── */
+    .center-zone {
+      flex: 1;
+      overflow-y: auto;
+      background: #fff;
+      padding: 16px 16px 16px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 16px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .center-zone::-webkit-scrollbar { display: none; }
+
+    /* ── MAIN ── */
+    .main {
+      width: 100%;
+      max-width: 500px;
+      flex-shrink: 0;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #e4e4e7;
+      border-radius: 14px;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px 12px;
+      border-bottom: 1px solid #f4f4f5;
+    }
+
+    .card-header h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .card-header-icons { display: flex; gap: 4px; }
+
+    .hdr-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #71717a;
+      transition: background 0.12s;
+    }
+    .hdr-btn:hover { background: #f4f4f5; }
+    .hdr-btn svg { width: 15px; height: 15px; }
+
+    /* Cover */
+    .cover {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Profile area */
+    .profile-wrap {
+      padding: 0 20px 18px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .og-avatar {
+      width: 68px;
+      height: 68px;
+      background: #e4e4e7;
       border-radius: 16px;
-      padding: 2rem 1.75rem;
-      width: 200px;
-      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-      cursor: default;
-    }
-
-    .creature:hover {
-      transform: translateY(-6px);
-      border-color: var(--glow);
-      box-shadow: 0 12px 40px rgba(0, 180, 216, 0.2);
-    }
-
-    .creature .emoji { font-size: 3rem; }
-
-    .creature h3 {
-      margin-top: 1rem;
-      font-size: 1rem;
-      font-weight: 400;
-      color: var(--white);
-    }
-
-    .creature p {
-      margin-top: 0.5rem;
-      font-size: 0.8rem;
-      color: rgba(232, 244, 253, 0.5);
-      line-height: 1.5;
-    }
-
-    /* ── Fact bar ── */
-    .factbar {
-      background: var(--glow);
-      color: var(--navy);
-      padding: 1.25rem 2rem;
+      border: 3px solid #fff;
+      margin-top: -30px;
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       justify-content: center;
-      gap: 2rem 4rem;
-    }
-
-    .fact {
-      text-align: center;
-    }
-
-    .fact .num {
-      font-size: 2rem;
+      font-size: 22px;
       font-weight: 700;
-      line-height: 1;
+      color: #71717a;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
 
-    .fact .label {
-      font-size: 0.72rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      opacity: 0.75;
+    .profile-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-top: 10px;
     }
 
-    /* ── Footer ── */
-    footer {
-      padding: 3rem 2rem;
-      text-align: center;
-      background: var(--navy);
-      color: rgba(232, 244, 253, 0.3);
-      font-size: 0.8rem;
-      letter-spacing: 0.05em;
+    .profile-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111;
+      line-height: 1.2;
     }
 
-    footer strong {
-      color: var(--glow);
+    .profile-tag {
+      font-size: 13px;
+      color: #71717a;
+      margin-top: 3px;
+    }
+
+    .profile-actions {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 2px;
+    }
+
+    .act-icon {
+      width: 32px;
+      height: 32px;
+      border: 1px solid #e4e4e7;
+      border-radius: 8px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #52525b;
+      transition: background 0.12s;
+    }
+    .act-icon:hover { background: #f4f4f5; }
+    .act-icon svg { width: 15px; height: 15px; }
+
+    .btn-add-team {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 0 14px;
+      height: 32px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-add-team:hover { background: #dbeafe; }
+    .btn-add-team svg { width: 13px; height: 13px; }
+
+    .profile-meta {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12.5px;
+      color: #71717a;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .profile-meta svg { width: 13px; height: 13px; flex-shrink: 0; }
+    .meta-sep { color: #d4d4d8; }
+
+    .meta-link {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #71717a;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .meta-link:hover { color: #111; }
+
+    .creator-pic {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      object-fit: cover;
+      vertical-align: middle;
+    }
+
+    .members-label {
+      font-size: 12.5px;
+      color: #71717a;
+      margin-top: 6px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      padding: 0 20px;
+      border-bottom: 1px solid #f0f0f0;
+      gap: 4px;
+    }
+
+    .tab {
+      padding: 11px 14px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: #71717a;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: color 0.12s;
+    }
+    .tab:hover { color: #111; }
+    .tab.active { color: #111; border-bottom-color: #111; }
+
+    .tab-body {
+      padding: 20px;
+    }
+
+    /* Products section */
+    .products-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .products-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #111;
+    }
+
+    .add-product-btn {
+      width: 24px;
+      height: 24px;
+      background: #2563eb;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .add-product-btn svg { width: 13px; height: 13px; color: #fff; }
+
+    .products-see-all {
+      font-size: 13px;
+      font-weight: 500;
+      color: #2563eb;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .products-see-all:hover { text-decoration: underline; }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 220px));
+      gap: 14px;
+    }
+
+    .product-card {
+      border: 1px solid #e4e4e7;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .product-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: #f4f4f5;
+    }
+
+    .product-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-img-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 24px 10px 8px;
+      background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .product-footer {
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .product-price {
+      font-size: 13px;
+      font-weight: 600;
+      color: #2563eb;
+    }
+
+    .product-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .product-action-icon {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #e4e4e7;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #2563eb;
+      transition: background 0.12s;
+    }
+    .product-action-icon:hover { background: #eff6ff; }
+    .product-action-icon svg { width: 14px; height: 14px; }
+
+    /* ── RIGHT SIDEBAR ── */
+    .right-sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: #fff;
+      padding: 0;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .right-sidebar::-webkit-scrollbar { display: none; }
+
+    /* People card border */
+    .people-card {
+      border: 1px solid #e4e4e7;
+      border-radius: 12px;
+      overflow: hidden;
+      padding: 12px 0 4px;
+    }
+
+    .rs-search {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f4f4f5;
+      border: 1px solid #e4e4e7;
+      border-radius: 9px;
+      padding: 0 10px;
+      height: 32px;
+      color: #a1a1aa;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    .rs-search svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    .kbd-badge {
+      margin-left: auto;
+      background: #e4e4e7;
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 10px;
+      color: #71717a;
+      font-family: monospace;
+    }
+
+    .rs-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 7px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #3f3f46;
+      font-size: 13.5px;
       font-weight: 400;
+      transition: background 0.12s;
     }
+    .rs-item:hover { background: #f4f4f5; }
+    .rs-item svg { width: 15px; height: 15px; color: #71717a; }
+
+    .rs-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 8px 6px;
+    }
+
+    .rs-section-title {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #111;
+    }
+
+    .rs-see-all {
+      font-size: 12.5px;
+      color: #2563eb;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .rs-see-all:hover { text-decoration: underline; }
+
+    .rs-team-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #a1a1aa;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 8px 6px;
+    }
+
+    .member-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+    .member-row:hover { background: #f4f4f5; }
+
+    .member-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .member-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .online-dot {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 9px;
+      height: 9px;
+      background: #22c55e;
+      border-radius: 50%;
+      border: 1.5px solid #fff;
+    }
+
+    .member-info { flex: 1; min-width: 0; }
+    .member-name { font-size: 13px; font-weight: 500; color: #111; }
+    .member-handle { font-size: 11.5px; color: #a1a1aa; }
+
+    .staff-tag {
+      font-size: 11px;
+      font-weight: 500;
+      background: #f4f4f5;
+      color: #71717a;
+      padding: 2px 8px;
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+
+    .invite-link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+      padding: 8px;
+      background: #fff;
+      border: 1px solid #e4e4e7;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #3f3f46;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.12s;
+    }
+    .invite-link-btn:hover { background: #f4f4f5; }
+    .invite-link-btn svg { width: 14px; height: 14px; color: #71717a; }
+
+    /* ── Domain Card ── */
+    .domain-card {
+      border: 1px solid #e4e4e7;
+      border-radius: 12px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    .domain-icon {
+      width: 36px;
+      height: 36px;
+      background: #eff6ff;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      color: #2563eb;
+    }
+    .domain-icon svg { width: 18px; height: 18px; }
+
+    .domain-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 6px;
+    }
+
+    .domain-desc {
+      font-size: 12px;
+      color: #71717a;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .domain-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+      padding: 10px;
+      background: #fa4616;
+      color: #fff;
+      border: 1px solid #b62600;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0px 3px 0px 0px #b62600;
+      transition: background 0.1s, box-shadow 0.1s, transform 0.1s;
+    }
+    .domain-cta:hover { background: #fe5a2e; }
+    .domain-cta:active { background: #fe5a2e; box-shadow: none; transform: translateY(3px); }
+    .domain-cta svg { width: 14px; height: 14px; }
   </style>
 </head>
 <body>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="bubbles" id="bubbles"></div>
-    <p class="depth-label">11,000 metres below the surface</p>
-    <h1>The Deep<br>Ocean</h1>
-    <p>Less than 20% of our ocean floor has been mapped. We know more about the surface of Mars than we do about the deepest trenches of Earth.</p>
-    <div class="scroll-hint">
-      <span></span>
-      dive in
-    </div>
-  </section>
-
-  <!-- Depth Zones -->
-  <section class="zones">
-    <div class="zone">
-      <div class="zone-icon">☀️</div>
-      <div class="zone-depth">0 – 200 m</div>
-      <h2>Sunlight Zone</h2>
-      <p>The ocean's surface layer receives enough light to support photosynthesis. Home to 90% of all marine life and the world's fisheries.</p>
-    </div>
-    <div class="zone">
-      <div class="zone-icon">🌑</div>
-      <div class="zone-depth">200 – 1,000 m</div>
-      <h2>Twilight Zone</h2>
-      <p>Only faint, filtered light penetrates here. Creatures use bioluminescence to hunt, communicate, and hide from predators lurking below.</p>
-    </div>
-    <div class="zone">
-      <div class="zone-icon">🦑</div>
-      <div class="zone-depth">1,000 – 4,000 m</div>
-      <h2>Midnight Zone</h2>
-      <p>Pitch black and bone-cold. The pressure here is 400 times that at the surface. Giant squid and sperm whales patrol these waters.</p>
-    </div>
-    <div class="zone">
-      <div class="zone-icon">🌋</div>
-      <div class="zone-depth">4,000 – 11,000 m</div>
-      <h2>Hadal Zone</h2>
-      <p>Named after Hades, the underworld. Found only in ocean trenches, yet life stubbornly thrives — microbes, snailfish, and amphipods.</p>
-    </div>
-  </section>
-
-  <!-- Creature Spotlight -->
-  <section class="spotlight">
-    <h2>Strange Residents</h2>
-    <p class="sub">Creatures evolution forgot to make ordinary</p>
-    <div class="creatures">
-      <div class="creature">
-        <div class="emoji">🐟</div>
-        <h3>Anglerfish</h3>
-        <p>Lures prey with a bioluminescent rod growing from its forehead.</p>
-      </div>
-      <div class="creature">
-        <div class="emoji">🦐</div>
-        <h3>Dumbo Octopus</h3>
-        <p>Flaps ear-like fins to hover gracefully at 7,000 m depth.</p>
-      </div>
-      <div class="creature">
-        <div class="emoji">🌊</div>
-        <h3>Barreleye Fish</h3>
-        <p>Transparent head filled with fluid, eyes that rotate to look up.</p>
-      </div>
-      <div class="creature">
-        <div class="emoji">🦠</div>
-        <h3>Snailfish</h3>
-        <p>The deepest fish ever recorded — found at 8,336 metres.</p>
-      </div>
-      <div class="creature">
-        <div class="emoji">🎇</div>
-        <h3>Siphonophore</h3>
-        <p>A colonial organism stretching 45 m — the longest animal on Earth.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Fact Bar -->
-  <div class="factbar">
-    <div class="fact">
-      <div class="num">71%</div>
-      <div class="label">of Earth's surface is ocean</div>
-    </div>
-    <div class="fact">
-      <div class="num">3.7 km</div>
-      <div class="label">average ocean depth</div>
-    </div>
-    <div class="fact">
-      <div class="num">11,034 m</div>
-      <div class="label">Challenger Deep, deepest point</div>
-    </div>
-    <div class="fact">
-      <div class="num">80%</div>
-      <div class="label">remains unexplored</div>
+<!-- ── TOP NAV ── -->
+<nav class="topnav">
+  <div class="nav-left">
+    <img src="whoplogo.png" alt="Whop" class="whop-logo" />
+    <span class="nav-sep">/</span>
+    <div class="store-chip">
+      <div class="store-icon"><img src="oglogo.jpg" alt="OG" style="width:100%;height:100%;object-fit:cover;border-radius:4px;" /></div>
+      <span class="store-chip-name">Olive Grove</span>
+      <svg class="chevron-down" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer>
-    The ocean is <strong>Earth's life support system</strong> &mdash; regulating climate, producing oxygen, and feeding billions.
-  </footer>
+  <div class="nav-search">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M11 11l3 3"/></svg>
+    Search Olive Grove
+  </div>
 
-  <script>
-    const container = document.getElementById('bubbles');
-    for (let i = 0; i < 28; i++) {
-      const b = document.createElement('div');
-      b.className = 'bubble';
-      const size = 4 + Math.random() * 18;
-      b.style.cssText = `
-        width: ${size}px;
-        height: ${size}px;
-        left: ${Math.random() * 100}%;
-        animation-duration: ${8 + Math.random() * 14}s;
-        animation-delay: ${Math.random() * 10}s;
-        opacity: ${0.1 + Math.random() * 0.4};
-      `;
-      container.appendChild(b);
-    }
-  </script>
+  <div class="nav-right">
+    <div class="nav-icon-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4h12M2 8h8M2 12h6"/></svg>
+      <div class="notif-badge">1</div>
+    </div>
+    <div class="nav-icon-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2a4 4 0 0 1 4 4v2.5l1 1.5H3l1-1.5V6a4 4 0 0 1 4-4zM6.5 13a1.5 1.5 0 0 0 3 0"/></svg>
+    </div>
+    <div class="nav-avatar"></div>
+    <div class="balance-btn">$0.00</div>
+    <img src="alex profile pic.png" alt="Alex" class="alex-avatar-sm" />
+  </div>
+</nav>
+
+<!-- ── LAYOUT ── -->
+<div class="layout">
+
+  <!-- Left Sidebar -->
+  <aside class="sidebar">
+    <a class="sidebar-item active">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 7.5L8 2l6 5.5V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5z"/></svg>
+      Business home
+    </a>
+
+    <div class="sidebar-section">Dashboard</div>
+
+    <a class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="2,12 5,8 8,10 11,5 14,8"/></svg>
+      Analytics
+    </a>
+    <a class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="4.5" width="13" height="9" rx="1.5"/><path d="M4.5 4.5V3A1.5 1.5 0 0 1 6 1.5h4A1.5 1.5 0 0 1 11.5 3v1.5"/><line x1="4.5" y1="9" x2="11.5" y2="9"/></svg>
+      Payments
+    </a>
+    <a class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="5.5" r="3"/><path d="M2 14c0-3.314 2.686-5.5 6-5.5s6 2.186 6 5.5"/></svg>
+      Users
+    </a>
+    <a class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="12" height="8" rx="1.5"/><path d="M5 6V4.5a3 3 0 0 1 6 0V6"/></svg>
+      Balances
+    </a>
+    <a class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="4" width="13" height="9" rx="1.5"/><line x1="1.5" y1="7.5" x2="14.5" y2="7.5"/></svg>
+      Cards
+    </a>
+    <a class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h12v7.5H2z"/><line x1="5" y1="13.5" x2="11" y2="13.5"/><line x1="8" y1="10.5" x2="8" y2="13.5"/></svg>
+      Ads
+    </a>
+    <a class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 2.5h11a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H9l-3 2v-2H2.5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z"/></svg>
+      Support chats
+    </a>
+
+    <div class="sidebar-section">Pinned</div>
+
+    <a class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="5,8 2,8 8,2 14,8 11,8 11,14 5,14 5,8"/></svg>
+      Developer
+    </a>
+    <a href="settings.html" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.54 11.54l1.42 1.42M3.05 12.95l1.42-1.42M11.54 4.46l1.42-1.42"/></svg>
+      Settings
+    </a>
+  </aside>
+
+  <!-- Center zone wraps card + right sidebar -->
+  <div class="center-zone">
+  <main class="main">
+    <div class="card">
+      <!-- Card header -->
+      <div class="card-header">
+        <h2>Home</h2>
+        <div class="card-header-icons">
+          <div class="hdr-btn">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M11 11l3 3"/></svg>
+          </div>
+          <div class="hdr-btn">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="3.5" r="1"/><circle cx="8" cy="8" r="1"/><circle cx="8" cy="12.5" r="1"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cover image -->
+      <img src="cover.jpg" alt="Olive Grove cover" class="cover" />
+
+      <!-- Profile -->
+      <div class="profile-wrap">
+        <div class="og-avatar"><img src="oglogo.jpg" alt="OG" style="width:100%;height:100%;object-fit:cover;border-radius:13px;" /></div>
+
+        <div class="profile-row">
+          <div>
+            <div class="profile-name">Olive Grove</div>
+            <div class="profile-tag">Earth conscious fashion</div>
+          </div>
+          <div class="profile-actions">
+            <div class="act-icon">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="5.5" r="3"/><path d="M2 14c0-3.314 2.686-5.5 6-5.5s6 2.186 6 5.5"/></svg>
+            </div>
+            <div class="act-icon">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2a4 4 0 0 1 4 4v2.5l1 1.5H3l1-1.5V6a4 4 0 0 1 4-4zM6.5 13a1.5 1.5 0 0 0 3 0"/></svg>
+            </div>
+            <button class="btn-add-team">
+              Add team
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v10M3 8h10"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="profile-meta">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 1.5C5.515 1.5 3.5 3.515 3.5 6c0 3.75 4.5 8.5 4.5 8.5S12.5 9.75 12.5 6c0-2.485-2.015-4.5-4.5-4.5z"/><circle cx="8" cy="6" r="1.5"/></svg>
+          Texas, US
+          <span class="meta-sep">•</span>
+          <span class="meta-link">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 3v10M3 8h10"/></svg>
+            Add social links
+          </span>
+          <span class="meta-sep">•</span>
+          Created by
+          <img src="alex profile pic.png" alt="Alex" class="creator-pic" />
+          <strong style="color:#111;font-weight:600;">Alex Jackson</strong>
+        </div>
+
+        <div class="members-label">1 members</div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <div class="tab active">Home</div>
+        <div class="tab">Chats</div>
+        <div class="tab">Apps</div>
+        <div class="tab">Products</div>
+        <div class="tab">About</div>
+      </div>
+
+      <div class="tab-body">
+        <!-- Products -->
+        <div class="products-header">
+          <div class="products-title">
+            Products
+            <div class="add-product-btn">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 3v10M3 8h10"/></svg>
+            </div>
+          </div>
+          <a class="products-see-all">See all</a>
+        </div>
+
+        <div class="products-grid">
+          <div class="product-card">
+            <div class="product-img-wrap">
+              <img src="productimg1.webp" alt="Shirt Dress" />
+              <div class="product-img-label">Shirt Dress</div>
+            </div>
+            <div class="product-footer">
+              <span class="product-price">$120.00</span>
+              <div class="product-actions">
+                <div class="product-action-icon">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2"/></svg>
+                </div>
+                <div class="product-action-icon">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M11.5 2.5a1.5 1.5 0 0 1 2.12 2.12L5 13.25 2 14l.75-3L11.5 2.5z"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Right Sidebar -->
+  <aside class="right-sidebar">
+    <div class="rs-search">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M11 11l3 3"/></svg>
+      Search Olive Grove
+      <span class="kbd-badge">⌘K</span>
+    </div>
+
+    <div class="rs-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="4.5" width="13" height="9" rx="1.5"/><path d="M4.5 4.5V3A1.5 1.5 0 0 1 6 1.5h4A1.5 1.5 0 0 1 11.5 3v1.5"/></svg>
+      Products
+    </div>
+    <div class="rs-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h12v7.5H2z"/><line x1="5" y1="13.5" x2="11" y2="13.5"/><line x1="8" y1="10.5" x2="8" y2="13.5"/></svg>
+      Ads
+    </div>
+    <div class="rs-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 1.5l1.8 3.6 4 .6-2.9 2.8.7 4-3.6-1.9-3.6 1.9.7-4L2.2 5.7l4-.6z"/></svg>
+      Affiliates
+    </div>
+
+    <!-- People card with border -->
+    <div class="people-card" style="margin-top:10px;">
+      <div class="rs-section" style="padding-top:4px;">
+        <span class="rs-section-title">People <span style="color:#a1a1aa;font-weight:400;">1</span></span>
+        <a class="rs-see-all">See all</a>
+      </div>
+
+      <div class="rs-team-label">Team</div>
+
+      <div class="member-row">
+        <div class="member-avatar-wrap">
+          <img src="alex profile pic.png" alt="Alex" class="member-avatar" />
+          <div class="online-dot"></div>
+        </div>
+        <div class="member-info">
+          <div class="member-name">Alex Jackson</div>
+          <div class="member-handle">@alex</div>
+        </div>
+        <div class="staff-tag">staff</div>
+      </div>
+
+      <div style="padding: 4px 8px 8px;">
+        <button class="invite-link-btn" style="margin-top:4px;">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 3H13V6"/><path d="M13 3L8 8"/><path d="M7 4H3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V9"/></svg>
+          Copy invite link
+        </button>
+      </div>
+    </div>
+
+    <!-- Custom Domain Card -->
+    <div class="domain-card" style="margin-top:12px;">
+      <div class="domain-icon">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6"/><path d="M8 2c-1.5 2-2.5 3.8-2.5 6s1 4 2.5 6"/><path d="M8 2c1.5 2 2.5 3.8 2.5 6s-1 4-2.5 6"/><path d="M2 8h12"/></svg>
+      </div>
+      <div class="domain-title">Publish on custom domain</div>
+      <div class="domain-desc">Give your store a home it deserves. A custom domain builds instant trust and keeps your brand front and centre.</div>
+      <a href="domains.html" style="text-decoration:none;display:block;">
+        <button class="domain-cta" style="width:100%;cursor:pointer;">
+          Claim for free
+        </button>
+      </a>
+    </div>
+  </aside>
+
+  </div><!-- end center-zone -->
+</div>
+
+<script>
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.sidebar-item').forEach(t => {
+    t.addEventListener('click', e => {
+      const href = t.getAttribute('href');
+      if (!href || href === '#') e.preventDefault();
+      document.querySelectorAll('.sidebar-item').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+    });
+  });
+</script>
 </body>
 </html>

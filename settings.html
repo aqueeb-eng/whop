@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings – Olive Grove</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', sans-serif;
+      background: #fff;
+      color: #111;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      display: flex;
+      align-items: center;
+      height: 52px;
+      padding: 0 14px;
+      background: #fff;
+      border-bottom: 1px solid #e4e4e7;
+      gap: 10px;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .nav-left { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .whop-logo { height: 20px; width: auto; }
+    .nav-sep { color: #d4d4d8; font-size: 18px; font-weight: 300; margin: 0 2px; }
+
+    .store-chip {
+      display: flex; align-items: center; gap: 6px;
+      padding: 4px 8px 4px 6px; border-radius: 8px; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .store-chip:hover { background: #f4f4f5; }
+
+    .store-icon {
+      width: 22px; height: 22px; border-radius: 5px; overflow: hidden;
+      flex-shrink: 0;
+    }
+    .store-icon img { width: 100%; height: 100%; object-fit: cover; }
+
+    .store-chip-name { font-size: 13.5px; font-weight: 600; color: #111; }
+    .chevron-down { width: 14px; height: 14px; color: #a1a1aa; }
+
+    .nav-search {
+      flex: 1; max-width: 320px;
+      display: flex; align-items: center; gap: 8px;
+      background: #f4f4f5; border: 1px solid #e4e4e7;
+      border-radius: 10px; padding: 0 12px; height: 34px;
+      color: #a1a1aa; font-size: 13px;
+    }
+    .nav-search svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+
+    .nav-icon-btn {
+      width: 34px; height: 34px; border-radius: 9px;
+      background: #f4f4f5; border: 1px solid #e4e4e7;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; position: relative; color: #52525b;
+    }
+    .nav-icon-btn svg { width: 16px; height: 16px; }
+
+    .notif-badge {
+      position: absolute; top: -4px; right: -4px;
+      width: 15px; height: 15px; background: #ef4444;
+      border-radius: 50%; font-size: 8.5px; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; border: 1.5px solid #fff;
+    }
+
+    .nav-avatar {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, #fde68a, #f9a8d4, #a5b4fc); cursor: pointer;
+    }
+
+    .balance-btn {
+      display: flex; align-items: center;
+      background: #f4f4f5; border: 1px solid #e4e4e7;
+      border-radius: 9px; padding: 0 12px; height: 34px;
+      font-size: 13px; font-weight: 500; color: #111; cursor: pointer;
+    }
+
+    .alex-avatar-sm { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; cursor: pointer; }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── LEFT SIDEBAR ── */
+    .sidebar {
+      width: 200px; background: #fff;
+      border-right: 1px solid #e4e4e7;
+      padding: 10px 8px;
+      display: flex; flex-direction: column; gap: 1px;
+      overflow-y: auto; flex-shrink: 0;
+      scrollbar-width: none;
+    }
+    .sidebar::-webkit-scrollbar { display: none; }
+
+    .sidebar-item {
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 10px; border-radius: 8px; cursor: pointer;
+      color: #52525b; font-size: 13.5px; font-weight: 400;
+      transition: background 0.12s; text-decoration: none; user-select: none;
+    }
+    .sidebar-item:hover { background: #f4f4f5; color: #111; }
+    .sidebar-item.active { background: #f4f4f5; color: #111; font-weight: 500; }
+    .sidebar-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    .sidebar-section {
+      font-size: 11px; font-weight: 600; color: #a1a1aa;
+      padding: 10px 10px 3px; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+
+    /* ── MAIN ── */
+    .main {
+      flex: 1; overflow-y: auto; background: #fff;
+      padding: 28px 32px; scrollbar-width: none;
+      display: flex; justify-content: center;
+    }
+    .main::-webkit-scrollbar { display: none; }
+
+    .content { width: 100%; max-width: 540px; }
+
+    /* Section title */
+    .section-title {
+      font-size: 16px; font-weight: 700; color: #111;
+      margin-bottom: 14px;
+    }
+
+    /* Business card */
+    .business-card {
+      display: flex; align-items: center; gap: 14px;
+      border: 1px solid #e4e4e7; border-radius: 12px;
+      padding: 14px 16px; margin-bottom: 28px;
+    }
+
+    .biz-logo {
+      width: 52px; height: 52px; border-radius: 12px;
+      overflow: hidden; flex-shrink: 0;
+      border: 1px solid #e4e4e7;
+    }
+    .biz-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+    .biz-info { flex: 1; }
+    .biz-name { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 2px; }
+    .biz-tag { font-size: 12.5px; color: #71717a; }
+
+    .edit-btn {
+      display: flex; align-items: center; gap: 6px;
+      border: 1px solid #e4e4e7; border-radius: 8px;
+      padding: 0 14px; height: 32px;
+      font-size: 13px; font-weight: 500; color: #3f3f46;
+      background: #fff; cursor: pointer; transition: background 0.12s;
+      flex-shrink: 0;
+    }
+    .edit-btn:hover { background: #f4f4f5; }
+    .edit-btn svg { width: 13px; height: 13px; }
+
+    /* Settings list */
+    .settings-card {
+      border: 1px solid #e4e4e7; border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .settings-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 13px 16px; cursor: pointer;
+      border-bottom: 1px solid #f4f4f5;
+      transition: background 0.12s;
+    }
+    .settings-row:last-child { border-bottom: none; }
+    .settings-row:hover { background: #fafafa; }
+
+    .settings-icon {
+      width: 34px; height: 34px; border-radius: 8px;
+      background: #f4f4f5; display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; color: #52525b;
+    }
+    .settings-icon svg { width: 16px; height: 16px; }
+
+    .settings-info { flex: 1; }
+    .settings-name { font-size: 13.5px; font-weight: 500; color: #111; margin-bottom: 3px; }
+
+    .settings-meta {
+      display: flex; align-items: center; gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 12px; color: #71717a;
+    }
+
+    .dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    }
+    .dot-green { background: #22c55e; }
+    .dot-gray { background: #d4d4d8; }
+
+    .meta-sep { color: #e4e4e7; font-size: 12px; }
+
+    .chevron-right { width: 15px; height: 15px; color: #a1a1aa; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+<!-- ── TOP NAV ── -->
+<nav class="topnav">
+  <div class="nav-left">
+    <img src="whoplogo.png" alt="Whop" class="whop-logo" />
+    <span class="nav-sep">/</span>
+    <div class="store-chip">
+      <div class="store-icon"><img src="oglogo.jpg" alt="OG" /></div>
+      <span class="store-chip-name">Olive Grove</span>
+      <svg class="chevron-down" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+    </div>
+  </div>
+
+  <div class="nav-search">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M11 11l3 3"/></svg>
+    Search Olive Grove
+  </div>
+
+  <div class="nav-right">
+    <div class="nav-icon-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4h12M2 8h8M2 12h6"/></svg>
+      <div class="notif-badge">1</div>
+    </div>
+    <div class="nav-icon-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2a4 4 0 0 1 4 4v2.5l1 1.5H3l1-1.5V6a4 4 0 0 1 4-4zM6.5 13a1.5 1.5 0 0 0 3 0"/></svg>
+    </div>
+    <div class="nav-avatar"></div>
+    <div class="balance-btn">$0.00</div>
+    <img src="alex profile pic.png" alt="Alex" class="alex-avatar-sm" />
+  </div>
+</nav>
+
+<!-- ── LAYOUT ── -->
+<div class="layout">
+
+  <!-- Left Sidebar -->
+  <aside class="sidebar">
+    <a href="index.html" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 7.5L8 2l6 5.5V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5z"/></svg>
+      Business home
+    </a>
+
+    <div class="sidebar-section">Dashboard</div>
+
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="2,12 5,8 8,10 11,5 14,8"/></svg>
+      Analytics
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="4.5" width="13" height="9" rx="1.5"/><path d="M4.5 4.5V3A1.5 1.5 0 0 1 6 1.5h4A1.5 1.5 0 0 1 11.5 3v1.5"/><line x1="4.5" y1="9" x2="11.5" y2="9"/></svg>
+      Payments
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="5.5" r="3"/><path d="M2 14c0-3.314 2.686-5.5 6-5.5s6 2.186 6 5.5"/></svg>
+      Users
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="6" width="12" height="8" rx="1.5"/><path d="M5 6V4.5a3 3 0 0 1 6 0V6"/></svg>
+      Balances
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="4" width="13" height="9" rx="1.5"/><line x1="1.5" y1="7.5" x2="14.5" y2="7.5"/></svg>
+      Cards
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3h12v7.5H2z"/><line x1="5" y1="13.5" x2="11" y2="13.5"/><line x1="8" y1="10.5" x2="8" y2="13.5"/></svg>
+      Ads
+    </a>
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 2.5h11a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H9l-3 2v-2H2.5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z"/></svg>
+      Support chats
+    </a>
+
+    <div class="sidebar-section">Pinned</div>
+
+    <a href="#" class="sidebar-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="5,8 2,8 8,2 14,8 11,8 11,14 5,14 5,8"/></svg>
+      Developer
+    </a>
+    <a href="settings.html" class="sidebar-item active">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.54 11.54l1.42 1.42M3.05 12.95l1.42-1.42M11.54 4.46l1.42-1.42"/></svg>
+      Settings
+    </a>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="content">
+
+      <!-- Business section -->
+      <div class="section-title">Business</div>
+      <div class="business-card">
+        <div class="biz-logo"><img src="oglogo.jpg" alt="Olive Grove" /></div>
+        <div class="biz-info">
+          <div class="biz-name">Olive Grove</div>
+          <div class="biz-tag">Earth conscious fashion</div>
+        </div>
+        <button class="edit-btn">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M11.5 2.5a1.5 1.5 0 0 1 2.12 2.12L5 13.25 2 14l.75-3L11.5 2.5z"/></svg>
+          Edit
+        </button>
+      </div>
+
+      <!-- Settings section -->
+      <div class="section-title">Settings</div>
+      <div class="settings-card">
+
+        <!-- Notifications -->
+        <div class="settings-row">
+          <div class="settings-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 2a4 4 0 0 1 4 4v2.5l1 1.5H3l1-1.5V6a4 4 0 0 1 4-4zM6.5 13a1.5 1.5 0 0 0 3 0"/></svg>
+          </div>
+          <div class="settings-info">
+            <div class="settings-name">Notifications</div>
+            <div class="settings-meta">
+              <div class="meta-item"><div class="dot dot-green"></div>All notifications enabled</div>
+            </div>
+          </div>
+          <svg class="chevron-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4l4 4-4 4"/></svg>
+        </div>
+
+        <!-- Checkout -->
+        <div class="settings-row">
+          <div class="settings-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="4.5" width="13" height="9" rx="1.5"/><path d="M4.5 4.5V3A1.5 1.5 0 0 1 6 1.5h4A1.5 1.5 0 0 1 11.5 3v1.5"/></svg>
+          </div>
+          <div class="settings-info">
+            <div class="settings-name">Checkout</div>
+            <div class="settings-meta">
+              <div class="meta-item"><div class="dot dot-green"></div>Transactional emails enabled</div>
+              <span class="meta-sep">•</span>
+              <div class="meta-item"><div class="dot dot-green"></div>Payment orchestration enabled</div>
+            </div>
+          </div>
+          <svg class="chevron-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4l4 4-4 4"/></svg>
+        </div>
+
+        <!-- Checkout branding -->
+        <div class="settings-row">
+          <div class="settings-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
+          </div>
+          <div class="settings-info">
+            <div class="settings-name">Checkout branding</div>
+            <div class="settings-meta">
+              <div class="meta-item" style="color:#a1a1aa;">Customize checkout appearance</div>
+            </div>
+          </div>
+          <svg class="chevron-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4l4 4-4 4"/></svg>
+        </div>
+
+        <!-- Domains -->
+        <div class="settings-row" onclick="window.location='domains.html'">
+          <div class="settings-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="8" r="6"/><path d="M8 2c-1.5 2-2.5 3.8-2.5 6s1 4 2.5 6"/><path d="M8 2c1.5 2 2.5 3.8 2.5 6s-1 4-2.5 6"/><path d="M2 8h12"/></svg>
+          </div>
+          <div class="settings-info">
+            <div class="settings-name">Domains</div>
+            <div class="settings-meta">
+              <div class="meta-item" style="color:#a1a1aa;">Connect or register a custom domain</div>
+            </div>
+          </div>
+          <svg class="chevron-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4l4 4-4 4"/></svg>
+        </div>
+
+        <!-- Payments -->
+        <div class="settings-row">
+          <div class="settings-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="4" width="13" height="9" rx="1.5"/><line x1="1.5" y1="7.5" x2="14.5" y2="7.5"/></svg>
+          </div>
+          <div class="settings-info">
+            <div class="settings-name">Payments</div>
+            <div class="settings-meta">
+              <div class="meta-item"><div class="dot dot-green"></div>1 payment protection enabled</div>
+            </div>
+          </div>
+          <svg class="chevron-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4l4 4-4 4"/></svg>
+        </div>
+
+        <!-- Invoices -->
+        <div class="settings-row">
+          <div class="settings-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="1.5" width="10" height="13" rx="1.5"/><line x1="5.5" y1="5" x2="10.5" y2="5"/><line x1="5.5" y1="7.5" x2="10.5" y2="7.5"/><line x1="5.5" y1="10" x2="8.5" y2="10"/></svg>
+          </div>
+          <div class="settings-info">
+            <div class="settings-name">Invoices</div>
+            <div class="settings-meta">
+              <div class="meta-item"><div class="dot dot-gray"></div>No custom invoice prefix set</div>
+            </div>
+          </div>
+          <svg class="chevron-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4l4 4-4 4"/></svg>
+        </div>
+
+        <!-- Legal -->
+        <div class="settings-row">
+          <div class="settings-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 2h8a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z"/><line x1="5.5" y1="5.5" x2="10.5" y2="5.5"/><line x1="5.5" y1="8" x2="10.5" y2="8"/><line x1="5.5" y1="10.5" x2="8" y2="10.5"/></svg>
+          </div>
+          <div class="settings-info">
+            <div class="settings-name">Legal</div>
+            <div class="settings-meta">
+              <div class="meta-item"><div class="dot dot-gray"></div>No policy documents uploaded</div>
+            </div>
+          </div>
+          <svg class="chevron-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4l4 4-4 4"/></svg>
+        </div>
+
+        <!-- Open graph image -->
+        <div class="settings-row">
+          <div class="settings-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1.5" y="3" width="13" height="10" rx="1.5"/><path d="M1.5 10l3.5-3 3 2.5 2.5-3 3 3.5"/><circle cx="5.5" cy="6.5" r="1"/></svg>
+          </div>
+          <div class="settings-info">
+            <div class="settings-name">Open graph image</div>
+            <div class="settings-meta">
+              <div class="meta-item"><div class="dot dot-green"></div>Open graph image is accessible</div>
+            </div>
+          </div>
+          <svg class="chevron-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4l4 4-4 4"/></svg>
+        </div>
+
+        <!-- Home preferences -->
+        <div class="settings-row">
+          <div class="settings-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 7.5L8 2l6 5.5V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.5z"/></svg>
+          </div>
+          <div class="settings-info">
+            <div class="settings-name">Home preferences</div>
+            <div class="settings-meta">
+              <div class="meta-item" style="color:#a1a1aa;">Customize your public business home page</div>
+            </div>
+          </div>
+          <svg class="chevron-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4l4 4-4 4"/></svg>
+        </div>
+
+        <!-- Authorized apps -->
+        <div class="settings-row">
+          <div class="settings-icon">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+          </div>
+          <div class="settings-info">
+            <div class="settings-name">Authorized apps</div>
+            <div class="settings-meta">
+              <div class="meta-item" style="color:#a1a1aa;">Manage connected applications</div>
+            </div>
+          </div>
+          <svg class="chevron-right" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4l4 4-4 4"/></svg>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script>
+  document.querySelectorAll('.sidebar-item').forEach(t => {
+    t.addEventListener('click', e => {
+      if (!t.getAttribute('href') || t.getAttribute('href') === '#') {
+        e.preventDefault();
+        document.querySelectorAll('.sidebar-item').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+      }
+    });
+  });
+</script>
+</body>
+</html>
