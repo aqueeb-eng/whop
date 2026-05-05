@@ -101,6 +101,32 @@
     /* Section */
     .sec-title { font-size: 13.5px; font-weight: 600; color: #111; margin-bottom: 10px; }
 
+    /* Search hero */
+    .search-hero {
+      margin-bottom: 24px; padding: 22px 22px 18px;
+      border: 1px solid #e4e4e7; border-radius: 14px;
+      background: #fff;
+    }
+
+    .search-hero-headline {
+      font-size: 24px; font-weight: 800; color: #111;
+      line-height: 1.25; margin-bottom: 16px; letter-spacing: -0.5px;
+    }
+    .hero-headline-line2 {
+      display: block; font-size: 18px; font-weight: 500;
+      color: #52525b; letter-spacing: -0.2px; margin-top: 2px;
+    }
+    .hero-bolt { font-style: normal; }
+
+    .search-tips {
+      display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px;
+    }
+    .search-tip {
+      font-size: 12px; color: #71717a;
+      background: #f4f4f5; border: 1px solid #e4e4e7;
+      padding: 4px 10px; border-radius: 20px;
+    }
+
     /* Search box */
     .domain-search-wrap {
       display: flex; gap: 0; margin-bottom: 24px;
@@ -126,42 +152,72 @@
     .search-btn svg { width: 14px; height: 14px; color: #71717a; }
 
     /* Results */
-    .results { display: none; flex-direction: column; border: 1px solid #e4e4e7; border-radius: 12px; overflow: hidden; margin-bottom: 24px; }
+    .results { display: none; flex-direction: column; margin-bottom: 24px; gap: 0; }
     .results.visible { display: flex; }
 
+    /* Hero result (.store) */
+    .result-hero {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 18px; background: #f4f4f5;
+      border: 1px solid #e4e4e7; border-radius: 12px;
+      margin-bottom: 10px; gap: 12px;
+    }
+    .result-hero-left { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+    .result-hero-name { font-size: 16px; font-weight: 700; color: #111; white-space: nowrap; }
+    .result-hero-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .result-hero-price { font-size: 14px; font-weight: 700; color: #111; white-space: nowrap; }
+    .result-hero-renew { font-size: 12px; font-weight: 400; color: #71717a; }
+    .hero-register-btn {
+      height: 34px; padding: 0 16px;
+      background: #fa4616; color: #fff;
+      border: 1px solid #b62600; border-radius: 8px;
+      font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+      box-shadow: 0px 3px 0px 0px #b62600;
+      transition: background 0.1s, box-shadow 0.1s, transform 0.1s;
+    }
+    .hero-register-btn:hover { background: #fe5a2e; }
+    .hero-register-btn:active { box-shadow: none; transform: translateY(3px); }
+
+    /* Free year badge */
+    .badge-free-year {
+      font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+      background: #f4f4f5; color: #52525b;
+      border: 1px solid #e4e4e7;
+      padding: 3px 7px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;
+    }
+    .badge-free-year sup { text-transform: lowercase; font-size: 0.8em; }
+
+    /* Count label + regular rows wrapper */
+    .result-regular-wrap {
+      border: 1px solid #e4e4e7; border-radius: 12px; overflow: hidden;
+    }
+    .result-count-label {
+      font-size: 10.5px; font-weight: 600; color: #a1a1aa;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 10px 16px 8px; background: #fafafa;
+      border-bottom: 1px solid #f0f0f0;
+    }
     .result-row {
       display: flex; align-items: center; gap: 12px;
-      padding: 14px 16px; border-bottom: 1px solid #f4f4f5;
+      padding: 13px 16px; border-bottom: 1px solid #f4f4f5;
       transition: background 0.12s;
     }
     .result-row:last-child { border-bottom: none; }
     .result-row:hover { background: #fafafa; }
 
-    .result-domain { flex: 1; }
-
-    .result-name-row { display: flex; align-items: center; gap: 7px; margin-bottom: 3px; }
-    .result-name { font-size: 14px; font-weight: 600; color: #111; }
-    .result-tld { color: #52525b; font-weight: 400; }
-
-    .badge-free {
-      font-size: 10.5px; font-weight: 500;
-      background: #f4f4f5; color: #52525b;
-      padding: 2px 7px; border-radius: 5px; border: 1px solid #e4e4e7;
+    .result-row-left { display: flex; align-items: center; gap: 9px; flex: 1; min-width: 0; }
+    .result-row-name { font-size: 14px; font-weight: 600; color: #111; white-space: nowrap; }
+    .result-row-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .result-price-free { font-size: 13px; font-weight: 600; color: #111; white-space: nowrap; }
+    .result-price-renew { font-size: 12px; font-weight: 400; color: #71717a; }
+    .result-price-paid { font-size: 13px; font-weight: 500; color: #3f3f46; white-space: nowrap; }
+    .result-register-link {
+      font-size: 13px; font-weight: 500; color: #111;
+      background: none; border: none; cursor: pointer;
+      text-decoration: underline; text-underline-offset: 2px;
+      white-space: nowrap; padding: 0; flex-shrink: 0;
     }
-
-    .result-pricing { font-size: 12px; color: #71717a; }
-
-    .register-btn {
-      display: flex; align-items: center; gap: 5px;
-      height: 32px; padding: 0 14px;
-      background: #fff; color: #111;
-      border: 1px solid #e4e4e7; border-radius: 8px;
-      font-size: 12.5px; font-weight: 500;
-      cursor: pointer; white-space: nowrap;
-      transition: background 0.12s, border-color 0.12s; flex-shrink: 0;
-    }
-    .register-btn:hover { background: #f4f4f5; border-color: #d4d4d8; }
-    .register-btn svg { width: 13px; height: 13px; color: #71717a; }
+    .result-register-link:hover { color: #52525b; }
 
     /* Success state */
     .success-card {
@@ -569,8 +625,8 @@
       <div class="page-title">Domains</div>
 
       <!-- Registered domains table -->
-      <div class="sec-title">My domains</div>
-      <div class="domains-table-wrap" id="domainsTableWrap">
+      <div class="sec-title" id="myDomainsTitleEl" style="display:none;">My domains</div>
+      <div class="domains-table-wrap" id="domainsTableWrap" style="display:none;">
         <table class="domain-table">
           <thead>
             <tr>
@@ -580,21 +636,25 @@
             </tr>
           </thead>
           <tbody id="domainsTableBody">
-            <tr id="emptyRow">
-              <td colspan="3" style="text-align:center;color:#a1a1aa;font-size:13px;padding:22px 16px;">No domains added yet</td>
-            </tr>
           </tbody>
         </table>
       </div>
 
       <!-- Search -->
-      <div class="sec-title">Find your domain</div>
-      <div class="domain-search-wrap">
-        <input class="domain-input" id="domainInput" type="text" placeholder="e.g. olivegrove" />
-        <button class="search-btn" onclick="searchDomains()">
-          Search
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l4 4-4 4"/></svg>
-        </button>
+      <div class="search-hero">
+        <div class="search-hero-headline">Find your name. <span class="hero-bolt">⚡</span><span class="hero-headline-line2">Instant availability. No fuss.</span></div>
+        <div class="domain-search-wrap">
+          <input class="domain-input" id="domainInput" type="text" placeholder="e.g. olivegrove" />
+          <button class="search-btn" onclick="searchDomains()">
+            Search
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l4 4-4 4"/></svg>
+          </button>
+        </div>
+        <div class="search-tips">
+          <span class="search-tip">Keep it under 15 characters</span>
+          <span class="search-tip">Avoid hyphens &amp; numbers</span>
+          <span class="search-tip">Start with your brand name</span>
+        </div>
       </div>
 
       <!-- Results -->
@@ -612,10 +672,16 @@
         <div class="reg-inline-body">
           <div class="reg-inline-fields">
             <div class="modal-field">
-              <label class="modal-label" for="regName">Full name</label>
-              <input class="modal-input" id="regName" type="text" placeholder="Alex Johnson" autocomplete="name" />
+              <label class="modal-label" for="regFirstName">First name</label>
+              <input class="modal-input" id="regFirstName" type="text" placeholder="Alex" autocomplete="given-name" />
             </div>
             <div class="modal-field">
+              <label class="modal-label" for="regLastName">Last name</label>
+              <input class="modal-input" id="regLastName" type="text" placeholder="Jackson" autocomplete="family-name" />
+            </div>
+          </div>
+          <div class="reg-inline-fields">
+            <div class="modal-field" style="flex:1;">
               <label class="modal-label" for="regEmail">Email</label>
               <input class="modal-input" id="regEmail" type="email" placeholder="alex@olivegrove.com" autocomplete="email" />
             </div>
@@ -690,25 +756,49 @@
     results.classList.add('visible');
     document.getElementById('successCard').classList.remove('visible');
     document.getElementById('regInlineCard').classList.remove('visible');
+    document.querySelector('.search-hero').style.display = '';
 
-    tlds.forEach(tld => {
+    // Hero: always .store
+    const hero = tlds.find(t => t.ext === '.store');
+    const heroEl = document.createElement('div');
+    heroEl.className = 'result-hero';
+    heroEl.innerHTML = `
+      <div class="result-hero-left">
+        <span class="result-hero-name">${val}.store</span>
+        <span class="badge-free-year">1<sup>st</sup> Year Free</span>
+      </div>
+      <div class="result-hero-right">
+        <span class="result-hero-price">Free <span class="result-hero-renew">then $${hero.price}/yr</span></span>
+        <button class="hero-register-btn" onclick="selectDomain('${val}.store', true, ${hero.price})">Register →</button>
+      </div>
+    `;
+    results.appendChild(heroEl);
+
+    // Regular rows: everything except .store
+    const regularTlds = tlds.filter(t => t.ext !== '.store');
+    const wrap = document.createElement('div');
+    wrap.className = 'result-regular-wrap';
+    wrap.innerHTML = `<div class="result-count-label">${regularTlds.length} Results</div>`;
+
+    regularTlds.forEach(tld => {
       const row = document.createElement('div');
       row.className = 'result-row';
+      const priceHtml = tld.free
+        ? `<span class="result-price-free">Free <span class="result-price-renew">then $${tld.price}/yr</span></span>`
+        : `<span class="result-price-paid">$${tld.price}/yr</span>`;
       row.innerHTML = `
-        <div class="result-domain">
-          <div class="result-name-row">
-            <span class="result-name">${val}<span class="result-tld">${tld.ext}</span></span>
-            ${tld.free ? `<span class="badge-free">Free</span>` : ''}
-          </div>
-          <div class="result-pricing">${tld.pricing}</div>
+        <div class="result-row-left">
+          <span class="result-row-name">${val}${tld.ext}</span>
+          ${tld.free ? `<span class="badge-free-year">1<sup>st</sup> Year Free</span>` : ''}
         </div>
-        <button class="register-btn" onclick="selectDomain('${val}${tld.ext}', ${tld.free}, ${tld.price})">
-          Select
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 4l4 4-4 4"/></svg>
-        </button>
+        <div class="result-row-right">
+          ${priceHtml}
+          <button class="result-register-link" onclick="selectDomain('${val}${tld.ext}', ${tld.free}, ${tld.price})">Register</button>
+        </div>
       `;
-      results.appendChild(row);
+      wrap.appendChild(row);
     });
+    results.appendChild(wrap);
   }
 
   /* ── STEP 1: Select → show inline form with Alex prefilled ── */
@@ -722,8 +812,9 @@
     document.getElementById('regSubmitBtn').textContent  = isFree ? 'Register domain' : 'Pay & Register — $' + price + '.00';
 
     // Prefill Alex's details
-    document.getElementById('regName').value  = 'Alex Jackson';
-    document.getElementById('regEmail').value = 'alex@olivegrove.com';
+    document.getElementById('regFirstName').value = 'Alex';
+    document.getElementById('regLastName').value  = 'Jackson';
+    document.getElementById('regEmail').value     = 'alex@olivegrove.com';
     document.getElementById('regAgree').checked = false;
     document.getElementById('regError').style.display = 'none';
 
@@ -737,11 +828,13 @@
 
   /* ── STEP 2: Register/Pay button ── */
   function submitRegistration() {
-    const name   = document.getElementById('regName').value.trim();
-    const email  = document.getElementById('regEmail').value.trim();
-    const agreed = document.getElementById('regAgree').checked;
+    const firstName = document.getElementById('regFirstName').value.trim();
+    const lastName  = document.getElementById('regLastName').value.trim();
+    const email     = document.getElementById('regEmail').value.trim();
+    const agreed    = document.getElementById('regAgree').checked;
 
-    if (!name)                         { showFieldError('Please enter your name.');        return; }
+    if (!firstName)                    { showFieldError('Please enter your first name.');  return; }
+    if (!lastName)                     { showFieldError('Please enter your last name.');   return; }
     if (!email || !email.includes('@')) { showFieldError('Please enter a valid email.');   return; }
     if (!agreed)                        { showFieldError('Please accept the legal terms.'); return; }
 
@@ -764,14 +857,17 @@
   /* ── STEP 3a: Free domain → success card + table row ── */
   function registerDomain(domain, price) {
     document.getElementById('results').classList.remove('visible');
+    document.getElementById('regInlineCard').classList.remove('visible');
+    document.querySelector('.search-hero').style.display = 'none';
     const card = document.getElementById('successCard');
     document.getElementById('successDomain').textContent  = domain + ' is now yours';
     document.getElementById('registeredDomain').textContent = domain;
     card.classList.add('visible');
     card.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-    const emptyRow = document.getElementById('emptyRow');
-    if (emptyRow) emptyRow.remove();
+    // Reveal My domains section on first add
+    document.getElementById('myDomainsTitleEl').style.display = '';
+    document.getElementById('domainsTableWrap').style.display = '';
 
     const expiry = new Date();
     expiry.setFullYear(expiry.getFullYear() + 1);
@@ -825,9 +921,6 @@
     document.getElementById('pwDue').textContent         = 'Due ' + dueStr;
     document.getElementById('pwInvoiceNum').textContent  = inv;
     document.getElementById('pwDescription').textContent = desc;
-    document.getElementById('pwDate').textContent        = todayStr;
-    document.getElementById('pwService').textContent     = '$' + amount.toFixed(2);
-    document.getElementById('pwTotal').textContent       = '$' + amount.toFixed(2);
 
     document.getElementById('paywallModal').classList.add('visible');
   }
