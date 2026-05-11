@@ -812,8 +812,9 @@
     document.getElementById('regAgree').checked = false;
     document.getElementById('regError').style.display = 'none';
 
-    // Hide search results when inline form opens
+    // Hide search results and search hero when inline form opens
     document.getElementById('results').classList.remove('visible');
+    document.querySelector('.search-hero').style.display = 'none';
 
     const card = document.getElementById('regInlineCard');
     card.classList.add('visible');
