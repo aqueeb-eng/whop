@@ -228,23 +228,8 @@
     .success-header {
       position: relative; padding: 22px 20px; overflow: hidden;
       display: flex; align-items: center; gap: 14px;
-      border-bottom: 1px solid #e4e4e7; background: #fff;
-    }
-
-    /* CSS gradient blob like financing section */
-    .success-header::before {
-      content: '';
-      position: absolute; top: -40px; left: -40px;
-      width: 200px; height: 200px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(134,239,172,0.35) 0%, rgba(147,197,253,0.25) 40%, transparent 70%);
-      filter: blur(20px); pointer-events: none;
-    }
-    .success-header::after {
-      content: '';
-      position: absolute; bottom: -30px; right: 60px;
-      width: 160px; height: 160px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(216,180,254,0.3) 0%, rgba(251,207,232,0.2) 50%, transparent 70%);
-      filter: blur(18px); pointer-events: none;
+      border-bottom: 1px solid #e4e4e7;
+      background: linear-gradient(135deg, rgba(134,239,172,0.2) 0%, rgba(187,247,208,0.12) 40%, rgba(255,255,255,1) 75%);
     }
 
     .success-icon {
@@ -951,9 +936,9 @@
     // Dynamic messaging
     const noteEl = document.getElementById('successNote');
     if (isFirstDomain) {
-      noteEl.innerHTML = 'Your domain is registered and auto connected to your Whop store. Visit <strong>My domains</strong> to manage your domain or register more domains.';
+      noteEl.innerHTML = 'Your domain is registered and auto connected to your Whop store. Visit <strong>My domains</strong> to manage your domain.';
     } else {
-      noteEl.innerHTML = 'Your domain is registered. Visit <strong>My domains</strong> to make it your primary domain or register more domains.';
+      noteEl.innerHTML = 'Your domain is registered. Visit <strong>My domains</strong> to make it your primary domain.';
     }
 
     card.classList.add('visible');
